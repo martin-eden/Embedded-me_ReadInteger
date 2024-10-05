@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-10-01
+  Last mod.: 2024-10-05
 */
 
 #include <me_ReadInteger.h>
@@ -28,19 +28,15 @@ using namespace me_ReadInteger;
 */
 TBool me_ReadInteger::Read_TUint_2(TUint_2 * Result)
 {
-  me_ManagedMemory::TManagedMemory Buffer;
-
   const TUint_1 BufferSize = 5;
 
-  /*
-    TManagedMemory will call .Release() upon object death.
-    So we may not call it explicitly.
-  */
-  Buffer.Reserve(BufferSize);
+  me_ManagedMemory::TManagedMemory Buffer;
+
+  Buffer.ResizeTo(BufferSize);
 
   me_SerialTokenizer::TCapturedEntity Entity;
 
-  if (!me_SerialTokenizer::GetEntity(&Entity, Buffer))
+  if (!me_SerialTokenizer::GetEntity(&Entity, Buffer.GetData()))
     return false;
 
   if (Entity.IsTrimmed)
@@ -65,15 +61,15 @@ TBool me_ReadInteger::Read_TUint_2(TUint_2 * Result)
 */
 TBool me_ReadInteger::Read_TSint_2(TSint_2 * Result)
 {
-  me_ManagedMemory::TManagedMemory Buffer;
-
   const TUint_1 BufferSize = 6;
 
-  Buffer.Reserve(BufferSize);
+  me_ManagedMemory::TManagedMemory Buffer;
+
+  Buffer.ResizeTo(BufferSize);
 
   me_SerialTokenizer::TCapturedEntity Entity;
 
-  if (!me_SerialTokenizer::GetEntity(&Entity, Buffer))
+  if (!me_SerialTokenizer::GetEntity(&Entity, Buffer.GetData()))
     return false;
 
   if (Entity.IsTrimmed)
@@ -142,4 +138,5 @@ TBool me_ReadInteger::Read_TSint_1(TSint_1 * Sint_1)
 
 /*
   2024-10-01 Took them from [me_RgbStripeConsole]
+  2024-10-05
 */

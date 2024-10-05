@@ -6,7 +6,7 @@
 */
 
 /*
-  Reading integer in ASCII in decimal notation. Common task.
+  Read integer from serial in ASCII in decimal notation. Common task.
 
   All needed parts are already implemented, we're just binding
   them together.
