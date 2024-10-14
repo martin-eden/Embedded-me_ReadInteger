@@ -1,0 +1,40 @@
+Rules from implementation of this library
+
+Do not use dynamic memory for fixed-length buffers
+
+  Background
+
+    I was using Lua code to send lines like
+
+      SPR 000 003  010 010 010  010 010 010  010 010 010  010 010 010
+
+    Lua side is giving time to board to process it. Delay was 50 ms.
+
+    Then I've added my implementation of memory manager. Board started
+    to lose data.
+
+    I was forced to increase delay on Lua side to 130 ms.
+
+  Investigation
+
+    On board side parsing that string yields to 14 calls of
+    Read_TUint_2().
+
+    Each call was allocating 5 bytes of memory for input buffer.
+    (65536 is 5 digits).
+
+    So there was 14 allocations/deallocations. Plugging memory
+    manager increased each alloc/delloc time.
+
+  Solution
+
+    Someone may think that solution is just do not use custom
+    memory manager and stay with free()/malloc() and 50 ms.
+
+    But no. We don't need dynamic memory for fixed-size buffer
+    if we can allocate it on stack.
+
+    So malloc()/free() is not used now.
+
+    Delay on Lua side is still 50 ms. (Yeah, malloc()/free() are fast.
+    But not needed.)
