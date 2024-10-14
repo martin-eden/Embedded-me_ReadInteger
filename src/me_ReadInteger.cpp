@@ -2,18 +2,21 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-10-05
+  Last mod.: 2024-10-14
 */
 
 #include <me_ReadInteger.h>
 
 #include <me_BaseTypes.h>
 
-#include <me_ManagedMemory.h> // buffer
+#include <me_MemorySegment.h> // buffer descriptor
 #include <me_SerialTokenizer.h> // getting chunk from stdin
 #include <me_ParseInteger.h> // ASCII to integer
 
 using namespace me_ReadInteger;
+using
+  me_MemorySegment::TMemorySegment,
+  me_MemorySegment::Freetown::FromAddrSize;
 
 /*
   Read integer in range [0, 65535] in decimal notation in ASCII.
@@ -29,14 +32,13 @@ using namespace me_ReadInteger;
 TBool me_ReadInteger::Read_TUint_2(TUint_2 * Result)
 {
   const TUint_1 BufferSize = 5;
+  TUint_1 Buffer[BufferSize];
 
-  me_ManagedMemory::TManagedMemory Buffer;
-
-  Buffer.ResizeTo(BufferSize);
+  TMemorySegment BuffSeg = FromAddrSize((TUint_2) &Buffer, BufferSize);
 
   me_SerialTokenizer::TCapturedEntity Entity;
 
-  if (!me_SerialTokenizer::GetEntity(&Entity, Buffer.GetData()))
+  if (!me_SerialTokenizer::GetEntity(&Entity, BuffSeg))
     return false;
 
   if (Entity.IsTrimmed)
@@ -62,14 +64,13 @@ TBool me_ReadInteger::Read_TUint_2(TUint_2 * Result)
 TBool me_ReadInteger::Read_TSint_2(TSint_2 * Result)
 {
   const TUint_1 BufferSize = 6;
+  TUint_1 Buffer[BufferSize];
 
-  me_ManagedMemory::TManagedMemory Buffer;
-
-  Buffer.ResizeTo(BufferSize);
+  TMemorySegment BuffSeg = FromAddrSize((TUint_2) &Buffer, BufferSize);
 
   me_SerialTokenizer::TCapturedEntity Entity;
 
-  if (!me_SerialTokenizer::GetEntity(&Entity, Buffer.GetData()))
+  if (!me_SerialTokenizer::GetEntity(&Entity, BuffSeg))
     return false;
 
   if (Entity.IsTrimmed)
@@ -139,4 +140,5 @@ TBool me_ReadInteger::Read_TSint_1(TSint_1 * Sint_1)
 /*
   2024-10-01 Took them from [me_RgbStripeConsole]
   2024-10-05
+  2024-10-14 Rule: No dynamic memory for fixed buffers
 */
