@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-10-14
+  Last mod.: 2024-10-28
 */
 
 #include <me_ReadInteger.h>
@@ -36,15 +36,14 @@ TBool me_ReadInteger::Read_TUint_2(TUint_2 * Result)
 
   TMemorySegment BuffSeg = FromAddrSize((TUint_2) &Buffer, BufferSize);
 
-  me_SerialTokenizer::TCapturedEntity Entity;
+  TMemorySegment Capture;
 
-  if (!me_SerialTokenizer::GetEntity(&Entity, BuffSeg))
+  me_SerialTokenizer::TSerialTokenizer Tokenizer;
+
+  if (!Tokenizer.GetEntity(&Capture, BuffSeg))
     return false;
 
-  if (Entity.IsTrimmed)
-    return false;
-
-  if (!me_ParseInteger::AsciiToUint2(Result, Entity.Segment))
+  if (!me_ParseInteger::AsciiToUint2(Result, Capture))
     return false;
 
   return true;
@@ -68,15 +67,14 @@ TBool me_ReadInteger::Read_TSint_2(TSint_2 * Result)
 
   TMemorySegment BuffSeg = FromAddrSize((TUint_2) &Buffer, BufferSize);
 
-  me_SerialTokenizer::TCapturedEntity Entity;
+  TMemorySegment Capture;
 
-  if (!me_SerialTokenizer::GetEntity(&Entity, BuffSeg))
+  me_SerialTokenizer::TSerialTokenizer Tokenizer;
+
+  if (!Tokenizer.GetEntity(&Capture, BuffSeg))
     return false;
 
-  if (Entity.IsTrimmed)
-    return false;
-
-  if (!me_ParseInteger::AsciiToSint2(Result, Entity.Segment))
+  if (!me_ParseInteger::AsciiToSint2(Result, Capture))
     return false;
 
   return true;
