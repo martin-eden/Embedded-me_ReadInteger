@@ -2,18 +2,19 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-10-01
+  Last mod.: 2024-10-28
 */
 
 #include <me_ReadInteger.h>
 
 #include <me_BaseTypes.h>
 #include <me_UartSpeeds.h>
+#include <me_Uart.h>
 #include <me_InstallStandardStreams.h>
 
 void setup()
 {
-  Serial.begin(me_UartSpeeds::Arduino_Normal_Bps);
+  me_Uart::Init(me_UartSpeeds::Arduino_Normal_Bps);
   InstallStandardStreams();
 
   printf("[me_ReadInteger] Okay, we are here.\n");
