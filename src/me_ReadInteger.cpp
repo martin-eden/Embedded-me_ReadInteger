@@ -14,6 +14,7 @@
 #include <me_ParseInteger.h> // ASCII to integer
 
 using namespace me_ReadInteger;
+
 using
   me_MemorySegment::TMemorySegment,
   me_MemorySegment::Freetown::FromAddrSize;
