@@ -2,24 +2,22 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-10-28
+  Last mod.: 2024-12-20
 */
 
 #include <me_ReadInteger.h>
 
 #include <me_BaseTypes.h>
-#include <me_UartSpeeds.h>
 #include <me_Uart.h>
-#include <me_InstallStandardStreams.h>
+#include <me_Console.h>
 
 void setup()
 {
-  me_Uart::Init(me_UartSpeeds::Arduino_Normal_Bps);
-  InstallStandardStreams();
+  me_Uart::Init(me_Uart::Speed_115k_Bps);
 
-  printf("[me_ReadInteger] Okay, we are here.\n");
+  Console.Print("[me_ReadInteger] Okay, we are here.");
   RunTest();
-  printf("[me_ReadInteger] Done.\n");
+  Console.Print("[me_ReadInteger] Done.");
 }
 
 void loop()
@@ -46,17 +44,19 @@ void RunTest()
   // TUint_1
   while (true)
   {
-    printf("Awaiting byte [0, 255] until 0.\n");
+    Console.Print("Awaiting byte [0, 255] until 0.");
 
     TUint_1 Uint_1;
 
     while (!Read_TUint_1(&Uint_1));
 
-    printf("Got [%u].\n", Uint_1);
+    Console.Write("Got");
+    Console.Print(Uint_1);
+    Console.EndLine();
 
     if (Uint_1 == 0)
     {
-      printf("Done.\n");
+      Console.Print("Done.");
       break;
     }
   }
@@ -64,17 +64,19 @@ void RunTest()
   // TUint_2
   while (true)
   {
-    printf("Awaiting word [0, 65535] until 0.\n");
+    Console.Print("Awaiting word [0, 65535] until 0.");
 
     TUint_2 Uint_2;
 
     while (!Read_TUint_2(&Uint_2));
 
-    printf("Got [%u].\n", Uint_2);
+    Console.Write("Got");
+    Console.Print(Uint_2);
+    Console.EndLine();
 
     if (Uint_2 == 0)
     {
-      printf("Done.\n");
+      Console.Print("Done.");
       break;
     }
   }
@@ -82,17 +84,19 @@ void RunTest()
   // TSint_1
   while (true)
   {
-    printf("Awaiting byte [-128, 127] until 0.\n");
+    Console.Print("Awaiting byte [-128, 127] until 0.");
 
     TSint_1 Sint_1;
 
     while (!Read_TSint_1(&Sint_1));
 
-    printf("Got [%d].\n", Sint_1);
+    Console.Write("Got");
+    Console.Print(Sint_1);
+    Console.EndLine();
 
     if (Sint_1 == 0)
     {
-      printf("Done.\n");
+      Console.Print("Done.");
       break;
     }
   }
@@ -100,17 +104,19 @@ void RunTest()
   // TSint_2
   while (true)
   {
-    printf("Awaiting word [-32768, 32767] until 0.\n");
+    Console.Print("Awaiting word [-32768, 32767] until 0.");
 
     TSint_2 Sint_2;
 
     while (!Read_TSint_2(&Sint_2));
 
-    printf("Got [%d].\n", Sint_2);
+    Console.Write("Got");
+    Console.Print(Sint_2);
+    Console.EndLine();
 
     if (Sint_2 == 0)
     {
-      printf("Done.\n");
+      Console.Print("Done.");
       break;
     }
   }
@@ -118,4 +124,5 @@ void RunTest()
 
 /*
   2024-10-01
+  2024-12-20
 */
