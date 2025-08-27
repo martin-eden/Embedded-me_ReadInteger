@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2024-10-28
+  Last mod.: 2025-08-27
 */
 
 #include <me_ReadInteger.h>
@@ -16,7 +16,6 @@
 using namespace me_ReadInteger;
 
 using
-  me_MemorySegment::TMemorySegment,
   me_MemorySegment::Freetown::FromAddrSize;
 
 /*
@@ -35,9 +34,9 @@ TBool me_ReadInteger::Read_TUint_2(TUint_2 * Result)
   const TUint_1 BufferSize = 5;
   TUint_1 Buffer[BufferSize];
 
-  TMemorySegment BuffSeg = FromAddrSize((TUint_2) &Buffer, BufferSize);
+  TAddressSegment BuffSeg = FromAddrSize((TUint_2) &Buffer, BufferSize);
 
-  TMemorySegment Capture;
+  TAddressSegment Capture;
 
   me_SerialTokenizer::TSerialTokenizer Tokenizer;
 
@@ -66,9 +65,9 @@ TBool me_ReadInteger::Read_TSint_2(TSint_2 * Result)
   const TUint_1 BufferSize = 6;
   TUint_1 Buffer[BufferSize];
 
-  TMemorySegment BuffSeg = FromAddrSize((TUint_2) &Buffer, BufferSize);
+  TAddressSegment BuffSeg = FromAddrSize((TUint_2) &Buffer, BufferSize);
 
-  TMemorySegment Capture;
+  TAddressSegment Capture;
 
   me_SerialTokenizer::TSerialTokenizer Tokenizer;
 
