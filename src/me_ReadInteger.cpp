@@ -2,21 +2,17 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-27
+  Last mod.: 2025-08-29
 */
 
 #include <me_ReadInteger.h>
 
 #include <me_BaseTypes.h>
 
-#include <me_MemorySegment.h> // buffer descriptor
 #include <me_SerialTokenizer.h> // getting chunk from stdin
 #include <me_ParseInteger.h> // ASCII to integer
 
 using namespace me_ReadInteger;
-
-using
-  me_MemorySegment::Freetown::FromAddrSize;
 
 /*
   Read integer in range [0, 65535] in decimal notation in ASCII.
@@ -34,7 +30,8 @@ TBool me_ReadInteger::Read_TUint_2(TUint_2 * Result)
   const TUint_1 BufferSize = 5;
   TUint_1 Buffer[BufferSize];
 
-  TAddressSegment BuffSeg = FromAddrSize((TUint_2) &Buffer, BufferSize);
+  TAddressSegment BuffSeg =
+    { .Addr = (TAddress) &Buffer, .Size = BufferSize };
 
   TAddressSegment Capture;
 
@@ -65,7 +62,8 @@ TBool me_ReadInteger::Read_TSint_2(TSint_2 * Result)
   const TUint_1 BufferSize = 6;
   TUint_1 Buffer[BufferSize];
 
-  TAddressSegment BuffSeg = FromAddrSize((TUint_2) &Buffer, BufferSize);
+  TAddressSegment BuffSeg =
+    { .Addr = (TAddress) &Buffer, .Size = BufferSize };
 
   TAddressSegment Capture;
 
