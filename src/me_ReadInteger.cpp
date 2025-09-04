@@ -18,31 +18,6 @@
 using namespace me_ReadInteger;
 
 /*
-  [Internal] Write entity to address segment
-*/
-TBool GetEntity(
-  TAddressSegment * BuffSeg,
-  IInputStream * InputStream
-)
-{
-  me_StreamsCollection::TWorkmemOutputStream BuffStreamOut;
-  me_StreamTokenizer::TStreamTokenizer Tokenizer;
-
-  if (!BuffStreamOut.Init(*BuffSeg))
-    return false;
-
-  Tokenizer.Init(InputStream);
-
-  if (!Tokenizer.WriteEntity(&BuffStreamOut))
-    return false;
-
-  if (!BuffStreamOut.IsFull())
-    me_AddrsegTools::ChopRightAt(BuffSeg, BuffStreamOut.GetWriteAddr());
-
-  return true;
-}
-
-/*
   Read integer in range [0, 65535] in decimal notation in ASCII.
 */
 TBool me_ReadInteger::Read_TUint_2(
@@ -56,7 +31,7 @@ TBool me_ReadInteger::Read_TUint_2(
   TAddressSegment BuffSeg =
     { .Addr = (TAddress) &Buffer, .Size = BufferSize };
 
-  if (!GetEntity(&BuffSeg, InputStream))
+  if (!me_StreamTokenizer::GetEntity(&BuffSeg, InputStream))
     return false;
 
   if (!me_ParseInteger::AsciiToUint2(Uint_2, BuffSeg))
@@ -100,7 +75,7 @@ TBool me_ReadInteger::Read_TSint_2(
   TAddressSegment BuffSeg =
     { .Addr = (TAddress) &Buffer, .Size = BufferSize };
 
-  if (!GetEntity(&BuffSeg, InputStream))
+  if (!me_StreamTokenizer::GetEntity(&BuffSeg, InputStream))
     return false;
 
   if (!me_ParseInteger::AsciiToSint2(Sint_2, BuffSeg))
