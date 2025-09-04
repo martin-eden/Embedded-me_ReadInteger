@@ -11,9 +11,7 @@
 #include <me_BaseInterfaces.h>
 
 #include <me_StreamTokenizer.h>
-#include <me_StreamsCollection.h>
-#include <me_AddrsegTools.h>
-#include <me_ParseInteger.h> // ASCII to integer
+#include <me_ParseInteger.h>
 
 using namespace me_ReadInteger;
 
