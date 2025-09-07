@@ -24,19 +24,24 @@ TBool me_ReadInteger::Read_TUint_2(
 )
 {
   const TUint_1 BufferSize = 5;
-  TUint_1 Buffer[BufferSize] = { 0 };
+  TUint_1 Buffer[BufferSize];
 
   TAddressSegment BuffSeg =
     { .Addr = (TAddress) &Buffer, .Size = BufferSize };
 
-  me_StreamsCollection::TWorkmemInputStream DataStream;
+  me_StreamTokenizer::TStreamTokenizer Tokenizer;
+  me_StreamsCollection::TWorkmemInputStream TokenInStream;
+  me_StreamsCollection::TWorkmemOutputStream TokenOutStream;
 
-  if (!me_StreamTokenizer::GetEntity(&BuffSeg, InputStream))
+  Tokenizer.Init(InputStream);
+  TokenOutStream.Init(BuffSeg);
+
+  if (!Tokenizer.WriteEntity(&TokenOutStream))
     return false;
 
-  DataStream.Init(BuffSeg);
+  TokenInStream.Init(TokenOutStream.GetProcessedSegment());
 
-  if (!Freetown::Parse_TUint_2(Uint_2, &DataStream))
+  if (!Freetown::Parse_TUint_2(Uint_2, &TokenInStream))
     return false;
 
   return true;
