@@ -1,8 +1,8 @@
-// Reading integers from serial
+// Reading integers from stream
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-04
+  Last mod.: 2025-09-07
 */
 
 #include <me_ReadInteger.h>
@@ -11,12 +11,12 @@
 #include <me_BaseInterfaces.h>
 
 #include <me_StreamTokenizer.h>
-#include <me_ParseInteger.h>
+#include <me_StreamsCollection.h>
 
 using namespace me_ReadInteger;
 
 /*
-  Read integer in range [0, 65535] in decimal notation in ASCII.
+  Read TUint_2 in ASCII decimal from stream
 */
 TBool me_ReadInteger::Read_TUint_2(
   TUint_2 * Uint_2,
@@ -29,17 +29,21 @@ TBool me_ReadInteger::Read_TUint_2(
   TAddressSegment BuffSeg =
     { .Addr = (TAddress) &Buffer, .Size = BufferSize };
 
+  me_StreamsCollection::TWorkmemInputStream DataStream;
+
   if (!me_StreamTokenizer::GetEntity(&BuffSeg, InputStream))
     return false;
 
-  if (!me_ParseInteger::AsciiToUint2(Uint_2, BuffSeg))
+  DataStream.Init(BuffSeg);
+
+  if (!Freetown::Parse_TUint_2(Uint_2, &DataStream))
     return false;
 
   return true;
 }
 
 /*
-  Read integer in range [0, 255] in decimal notation in ASCII.
+  Read TUint_1
 */
 TBool me_ReadInteger::Read_TUint_1(
   TUint_1 * Uint_1,
@@ -60,7 +64,7 @@ TBool me_ReadInteger::Read_TUint_1(
 }
 
 /*
-  Read integer in range [-32768, 32767] in decimal notation in ASCII.
+  Read TSint_2
 */
 TBool me_ReadInteger::Read_TSint_2(
   TSint_2 * Sint_2,
@@ -73,17 +77,21 @@ TBool me_ReadInteger::Read_TSint_2(
   TAddressSegment BuffSeg =
     { .Addr = (TAddress) &Buffer, .Size = BufferSize };
 
+  me_StreamsCollection::TWorkmemInputStream DataStream;
+
   if (!me_StreamTokenizer::GetEntity(&BuffSeg, InputStream))
     return false;
 
-  if (!me_ParseInteger::AsciiToSint2(Sint_2, BuffSeg))
+  DataStream.Init(BuffSeg);
+
+  if (!Freetown::Parse_TSint_2(Sint_2, &DataStream))
     return false;
 
   return true;
 }
 
 /*
-  Read integer in range [-128, 127] in decimal notation in ASCII.
+  Read TSint_1
 */
 TBool me_ReadInteger::Read_TSint_1(
   TSint_1 * Sint_1,
@@ -95,10 +103,7 @@ TBool me_ReadInteger::Read_TSint_1(
   if (!Read_TSint_2(&Sint_2, InputStream))
     return false;
 
-  if (Sint_2 < TSint_1_Min)
-    return false;
-
-  if (Sint_2 > TSint_1_Max)
+  if ((Sint_2 < TSint_1_Min) || (Sint_2 > TSint_1_Max))
     return false;
 
   *Sint_1 = (TSint_1) Sint_2;
@@ -107,9 +112,9 @@ TBool me_ReadInteger::Read_TSint_1(
 }
 
 /*
-  2024-10-01 Took them from [me_RgbStripeConsole]
-  2024-10-05
-  2024-10-14 Rule: No dynamic memory for fixed buffers
+  2024 # # # # # #
   2025-09-01
   2025-09-04
+  2025-09-05
+  2025-09-07
 */
