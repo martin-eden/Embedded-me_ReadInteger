@@ -2,30 +2,14 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-04
+  Last mod.: 2025-09-07
 */
 
 #include <me_ReadInteger.h>
 
 #include <me_BaseTypes.h>
 #include <me_BaseInterfaces.h>
-#include <me_StreamsCollection.h>
 #include <me_Console.h>
-
-void setup()
-{
-  Console.Init();
-
-  Console.Print("[me_ReadInteger] Okay, we are here.");
-  RunTest();
-  Console.Print("[me_ReadInteger] Done.");
-}
-
-void loop()
-{
-}
-
-// --
 
 /*
   Tests of parsing numbers to different integer types.
@@ -34,24 +18,23 @@ void loop()
 */
 void RunTest()
 {
-  me_StreamsCollection::TUartInputStream InputStream;
+  IInputStream * InputStream;
 
-  InputStream.Init();
+  InputStream = Console.GetInputStream();
 
   /*
     This "while" cycle is copy-pasted four times.
     I'm missing first-class functions from Lua.
-    Should try templates someday.
   */
 
   // TUint_2
   while (true)
   {
-    Console.Print("Awaiting word [0, 65535] until 0.");
+    Console.Print("Reading integer [0, 65535] until 0.");
 
     TUint_2 Uint_2;
 
-    while (!me_ReadInteger::Read_TUint_2(&Uint_2, &InputStream));
+    while (!me_ReadInteger::Read_TUint_2(&Uint_2, InputStream));
 
     Console.Write("Got");
     Console.Print(Uint_2);
@@ -67,11 +50,11 @@ void RunTest()
   // TUint_1
   while (true)
   {
-    Console.Print("Awaiting byte [0, 255] until 0.");
+    Console.Print("Reading integer [0, 255] until 0.");
 
     TUint_1 Uint_1;
 
-    while (!me_ReadInteger::Read_TUint_1(&Uint_1, &InputStream));
+    while (!me_ReadInteger::Read_TUint_1(&Uint_1, InputStream));
 
     Console.Write("Got");
     Console.Print(Uint_1);
@@ -87,11 +70,11 @@ void RunTest()
   // TSint_2
   while (true)
   {
-    Console.Print("Awaiting word [-32768, 32767] until 0.");
+    Console.Print("Reading integer [-32768, 32767] until 0.");
 
     TSint_2 Sint_2;
 
-    while (!me_ReadInteger::Read_TSint_2(&Sint_2, &InputStream));
+    while (!me_ReadInteger::Read_TSint_2(&Sint_2, InputStream));
 
     Console.Write("Got");
     Console.Print(Sint_2);
@@ -107,11 +90,11 @@ void RunTest()
   // TSint_1
   while (true)
   {
-    Console.Print("Awaiting byte [-128, 127] until 0.");
+    Console.Print("Reading integer [-128, 127] until 0.");
 
     TSint_1 Sint_1;
 
-    while (!me_ReadInteger::Read_TSint_1(&Sint_1, &InputStream));
+    while (!me_ReadInteger::Read_TSint_1(&Sint_1, InputStream));
 
     Console.Write("Got");
     Console.Print(Sint_1);
@@ -126,8 +109,24 @@ void RunTest()
 
 }
 
+void setup()
+{
+  Console.Init();
+
+  Console.Print("( [me_ReadInteger] test");
+
+  RunTest();
+
+  Console.Print(") Done");
+}
+
+void loop()
+{
+}
+
 /*
   2024 # #
   2025-09-01
   2025-09-04
+  2025-09-07
 */
