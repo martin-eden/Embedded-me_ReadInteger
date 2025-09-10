@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-07
+  Last mod.: 2025-09-10
 */
 
 #include <me_ReadInteger.h>
@@ -25,23 +25,49 @@ TBool me_ReadInteger::Read_TUint_2(
 {
   const TUint_1 BufferSize = 5;
   TUint_1 Buffer[BufferSize];
+  TAddressSegment BuffSeg;
+  me_StreamsCollection::TWorkmemOutputStream BuffStream;
+  me_StreamsCollection::TWorkmemInputStream DataStream;
 
-  TAddressSegment BuffSeg =
-    { .Addr = (TAddress) &Buffer, .Size = BufferSize };
+  BuffSeg = { .Addr = (TAddress) &Buffer, .Size = BufferSize };
 
-  me_StreamTokenizer::TStreamTokenizer Tokenizer;
-  me_StreamsCollection::TWorkmemInputStream TokenInStream;
-  me_StreamsCollection::TWorkmemOutputStream TokenOutStream;
+  BuffStream.Init(BuffSeg);
 
-  Tokenizer.Init(InputStream);
-  TokenOutStream.Init(BuffSeg);
-
-  if (!Tokenizer.WriteEntity(&TokenOutStream))
+  if (!me_StreamTokenizer::GetEntity(&BuffStream, InputStream))
     return false;
 
-  TokenInStream.Init(TokenOutStream.GetProcessedSegment());
+  DataStream.Init(BuffStream.GetProcessedSegment());
 
-  if (!Freetown::Parse_TUint_2(Uint_2, &TokenInStream))
+  if (!Freetown::Parse_TUint_2(Uint_2, &DataStream))
+    return false;
+
+  return true;
+}
+
+/*
+  Read TSint_2
+*/
+TBool me_ReadInteger::Read_TSint_2(
+  TSint_2 * Sint_2,
+  IInputStream * InputStream
+)
+{
+  const TUint_1 BufferSize = 6;
+  TUint_1 Buffer[BufferSize];
+  TAddressSegment BuffSeg;
+  me_StreamsCollection::TWorkmemOutputStream BuffStream;
+  me_StreamsCollection::TWorkmemInputStream DataStream;
+
+  BuffSeg = { .Addr = (TAddress) &Buffer, .Size = BufferSize };
+
+  BuffStream.Init(BuffSeg);
+
+  if (!me_StreamTokenizer::GetEntity(&BuffStream, InputStream))
+    return false;
+
+  DataStream.Init(BuffStream.GetProcessedSegment());
+
+  if (!Freetown::Parse_TSint_2(Sint_2, &DataStream))
     return false;
 
   return true;
@@ -64,33 +90,6 @@ TBool me_ReadInteger::Read_TUint_1(
     return false;
 
   *Uint_1 = (TUint_1) Uint_2;
-
-  return true;
-}
-
-/*
-  Read TSint_2
-*/
-TBool me_ReadInteger::Read_TSint_2(
-  TSint_2 * Sint_2,
-  IInputStream * InputStream
-)
-{
-  const TUint_1 BufferSize = 6;
-  TUint_1 Buffer[BufferSize];
-
-  TAddressSegment BuffSeg =
-    { .Addr = (TAddress) &Buffer, .Size = BufferSize };
-
-  me_StreamsCollection::TWorkmemInputStream DataStream;
-
-  if (!me_StreamTokenizer::GetEntity(&BuffSeg, InputStream))
-    return false;
-
-  DataStream.Init(BuffSeg);
-
-  if (!Freetown::Parse_TSint_2(Sint_2, &DataStream))
-    return false;
 
   return true;
 }
