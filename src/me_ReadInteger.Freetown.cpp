@@ -2,14 +2,15 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-07
+  Last mod.: 2025-09-11
 */
 
 #include <me_ReadInteger.h>
 
 #include <me_BaseTypes.h>
 #include <me_BaseInterfaces.h>
-#include <me_StreamTokenizer.h> // for vomitable stream
+
+#include <me_StreamTools.h> // for vomitable stream
 
 using namespace me_ReadInteger;
 
@@ -117,7 +118,7 @@ TBool me_ReadInteger::Freetown::Parse_TSint_2(
     MaxPosValue = (TUint_2) TSint_2_Max,
     MaxNegValue = (TUint_2) TSint_2_Min;
 
-  me_StreamTokenizer::TVomitableInputStream DataStream;
+  me_StreamTools::TVomitableInputStream DataStream;
   TUnit FirstChar;
   TBool IsNegative;
   TUint_2 Uint_2;
