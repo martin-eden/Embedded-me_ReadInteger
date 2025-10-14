@@ -2,15 +2,13 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-11
+  Last mod.: 2025-10-14
 */
 
 #include <me_ReadInteger.h>
 
 #include <me_BaseTypes.h>
 #include <me_BaseInterfaces.h>
-
-#include <me_StreamTools.h> // for vomitable stream
 
 using namespace me_ReadInteger;
 
@@ -118,7 +116,7 @@ TBool me_ReadInteger::Freetown::Parse_TSint_2(
     MaxPosValue = (TUint_2) TSint_2_Max,
     MaxNegValue = (TUint_2) TSint_2_Min;
 
-  me_StreamTools::TVomitableInputStream DataStream;
+  TInputStream DataStream;
   TUnit FirstChar;
   TBool IsNegative;
   TUint_2 Uint_2;
@@ -131,7 +129,7 @@ TBool me_ReadInteger::Freetown::Parse_TSint_2(
   IsNegative = (FirstChar == '-');
 
   if (!IsNegative)
-    DataStream.Vomit();
+    DataStream.Unread();
 
   if (!Parse_TUint_2(&Uint_2, &DataStream))
     return false;
