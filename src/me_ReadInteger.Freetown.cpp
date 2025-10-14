@@ -9,6 +9,7 @@
 
 #include <me_BaseTypes.h>
 #include <me_BaseInterfaces.h>
+#include <me_StreamTools.h>
 
 using namespace me_ReadInteger;
 
@@ -116,7 +117,7 @@ TBool me_ReadInteger::Freetown::Parse_TSint_2(
     MaxPosValue = (TUint_2) TSint_2_Max,
     MaxNegValue = (TUint_2) TSint_2_Min;
 
-  TInputStream DataStream;
+  me_StreamTools::TRereadableInputStream DataStream;
   TUnit FirstChar;
   TBool IsNegative;
   TUint_2 Uint_2;
