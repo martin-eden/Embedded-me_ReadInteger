@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-10-14
+  Last mod.: 2025-11-09
 */
 
 #include <me_ReadInteger.h>
@@ -22,6 +22,9 @@ TBool me_ReadInteger::Freetown::ToDigit(
 )
 {
   if (Char < '0')
+    return false;
+
+  if (Char > '9')
     return false;
 
   *Digit = Char - '0';
@@ -156,4 +159,5 @@ TBool me_ReadInteger::Freetown::Parse_TSint_2(
 /*
   2024 # # # # # #
   2025-09-07
+  2025-11-09
 */
